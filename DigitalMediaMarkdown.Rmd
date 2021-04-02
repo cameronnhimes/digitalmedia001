@@ -1,0 +1,117 @@
+---
+title: "Digital Media HW"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r pressure, echo=FALSE}
+library("corrgram")
+install.packages("ggplot2")
+library("ggplot2")
+complaints <- readRDS("~/Desktop/Digital Media/DigitalMediaHW01/complaints.rds") 
+
+```
+
+
+```{r pressure, echo=FALSE}
+CC.df <- complaints
+
+dim(CC.df)
+# 393050     22
+
+CCbyPr <- xtabs(~product, data=CC.df)
+CCbyI <- xtabs(~issue, data = CC.df)
+CCbyC <- xtabs(~company, data = CC.df)
+CCbyS <- xtabs(~state,data = CC.df)
+CCbyCCP <- xtabs(~consumer_consent_provided , data = CC.df)
+CCbyMoS <- xtabs(~submitted_via, data = CC.df)
+CCbyCR <- xtabs(~company_response_to_consumer, data=CC.df)
+CCbyTR <- xtabs(~timely_response, data=CC.df)
+CCbyCD <- xtabs(~consumer_disputed, data=CC.df)
+CCbyM <- xtabs(~mm_yy_received, data = CC.df)
+CCbySPr <- xtabs(~product +sub_product, data = CC.df)
+CbyCRandCD <- xtabs(~consumer_disputed + company_response_to_consumer, data=CC.df)
+CCbyMandP <- xtabs(~mm_yy_received+product, data=CC.df)
+CCbyMandC <- xtabs(~mm_yy_received+company, data=CC.df)
+CCbySI <- xtabs(~issue + sub_issue, data = CC.df)
+CCbyCandS <- xtabs(~company+state, data = CC.df)
+CCbyCandCR <- xtabs(~company+company_response_to_consumer, data=CC.df)
+CCbyMoSandM <- xtabs(~submitted_via + mm_yy_received, data = CC.df)
+CCbyCandTR <- xtabs(~company+timely_response, data=CC.df)
+CCbyCandCD <- xtabs(~company+consumer_disputed,data=CC.df)
+CCbyMandY <- xtabs(~mm_yy_received, data = CC.df)
+CCbyCRandY <- xtabs(~mm_yy_received+company_response_to_consumer, data= CC.df)
+CCbyTRandY <- xtabs(~timely_response+mm_yy_received, data = CC.df)
+CCbyCDandY <- xtabs(~consumer_disputed+mm_yy_received, data = CC.df)
+CCbyPrSPrandY <- xtabs(~product+sub_product+mm_yy_received, data = CC.df)
+CCbyPrMandY <- xtabs(~product+mm_yy_received, data = CC.df)
+CCbyPIandY <- xtabs(~product+issue+mm_yy_received, data = CC.df)
+```
+
+```
+title: "Column Orientation"
+output: flexdashboard::flex_dashboard
+```
+
+Column 
+------------------
+
+### Chart 1 
+
+```{r}
+#Trend of Complaints over the years and months 
+
+barplot(CCbyM, main = "Trend of Complaints over the years", xlab = "Month and Year", ylab = "Number of complaints")
+```
+
+
+Column 
+------------------
+
+### Chart 2 
+
+```{r}
+#Thus we see that the highest number of complaints are in the credit reporting, credit repair services, or other personal consumer reports products section followed by Debt collection product, which itself is closely followed by Credit card or prepaid card.
+
+dotchart(CCbyPr, pch = 21, bg = "red", color = "black", lcolor = "black", xlab = "Complaints", main = "Complaints by Product")
+```
+
+Column 
+------------------
+
+### Chart 3
+
+```{r}
+install.packages("RColorBrewer")
+library(RColorBrewer)
+CCbyMandP <- as.data.frame(CCbyMandP)
+ggplot(CCbyMandP, aes(factor(mm_yy_received), Freq, fill = product)) + 
+geom_bar(stat="identity", position = "dodge") + 
+xlab("Date Received")+
+ylab("Number of Complaints") +
+ggtitle("Complaints by Date and Product") +
+scale_fill_brewer(palette = "Set3") 
+```
