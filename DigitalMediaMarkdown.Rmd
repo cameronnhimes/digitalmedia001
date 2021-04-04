@@ -1,6 +1,9 @@
 ---
 title: "Digital Media HW"
-output: html_document
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
 ---
 
 ```{r setup, include=FALSE}
@@ -101,8 +104,8 @@ title: "Column Orientation"
 output: flexdashboard::flex_dashboard
 ```
 
-Column 
-------------------
+Column {data-width=650}
+-----------------------------------------------------------------------
 
 ### Chart 1 
 
@@ -110,11 +113,19 @@ Column
 #Trend of Complaints over the years and months 
 
 barplot(CCbyM, main = "Trend of Complaints over the years", xlab = "Month and Year", ylab = "Number of complaints")
+
+install.packages("knitr")
+library(knitr)
+install.packages("kableExtra")
+library(kableExtra)
+
+barplot(CCbyM, main = "Trend of Complaints over the years", xlab = "Month and Year", ylab = "Number of complaints")
+
 ```
 
 
-Column 
-------------------
+Column {data-width=350}
+-----------------------------------------------------------------------
 
 ### Chart 2 
 
@@ -125,7 +136,7 @@ dotchart(CCbyPr, pch = 21, bg = "red", color = "black", lcolor = "black", xlab =
 ```
 
 Column 
-------------------
+-----------------------------------------------------------------------
 
 ### Chart 3
 
